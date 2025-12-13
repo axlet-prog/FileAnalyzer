@@ -18,21 +18,22 @@ import picocli.CommandLine.Parameters;
 @Setter
 public class AnalyzeOptions {
 
-    @Option(names = { "-o" }, description = "directory to save result files")
+    @Option(names = { "-o", "--output" },
+            description = "Путь к директории для результатов (по умолчанию: текущая папка).")
     private Path directoryPath;
 
-    @Option(names = { "-p", "--prefix" }, description = "prefix of saved files")
+    @Option(names = { "-p", "--prefix" }, description = "Префикс имен выходных файлов (по умолчанию: отсутствует).")
     private String titlePrefix;
 
-    @Option(names = "-a", description = "append to existing files")
+    @Option(names = { "-a", "--append" }, description = "Режим добавления в существующие файлы.")
     private boolean appendToExistingFiles;
 
-    @Option(names = "-s", description = "short statistics")
+    @Option(names = { "-s", "--short" }, description = "Вывод краткой статистики.")
     private boolean shortStatistics;
 
-    @Option(names = "-f", description = "full statistics")
+    @Option(names = { "-f", "--full" }, description = "Вывод полной статистики.")
     private boolean fullStatistics;
 
-    @Parameters(index = "0..*", description = "Input files to analyze")
+    @Parameters(index = "1..*", paramLabel = "FILES", description = "Input files to analyze")
     private List<File> inputFiles;
 }
