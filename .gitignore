@@ -4,6 +4,7 @@ target/
 !**/src/test/**/target/
 .kotlin
 test_files/
+test_results/
 ### IntelliJ IDEA ###
 .idea/
 *.iws

@@ -1,4 +1,4 @@
-package com.example;
+package com.example.analysis;
 
 
 import java.io.File;
@@ -11,9 +11,9 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
 @Command(name = "file-analyzer",
-                     mixinStandardHelpOptions = true,
-                     version = "1.0",
-                     description = "Analyzes a list of files and generates statistics.")
+         mixinStandardHelpOptions = true,
+         version = "1.0",
+         description = "Analyzes a list of files and generates statistics.")
 @Getter
 @Setter
 public class AnalyzeOptions {

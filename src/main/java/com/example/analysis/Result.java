@@ -1,4 +1,4 @@
-package com.example;
+package com.example.analysis;
 
 import java.util.List;
 import lombok.Builder;
@@ -9,12 +9,12 @@ public record Result(
     Long maxInt,
     Double avgInt,
     Long sumInt,
-    List<Long> integers,
+    List<String> integers,
     Double minDouble,
     Double maxDouble,
     Double avgDouble,
     Double sumDouble,
-    List<Double> doubles,
+    List<String> doubles,
     Long maxLength,
     Long minLength,
     List<String> strings

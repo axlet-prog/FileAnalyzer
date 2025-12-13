@@ -1,5 +1,9 @@
 package com.example;
 
+import com.example.analysis.AnalyzeOptions;
+import com.example.analysis.Analyzer;
+import com.example.analysis.Result;
+import com.example.analysis.WriterUtil;
 import picocli.CommandLine;
 
 
@@ -32,6 +36,7 @@ public class App {
 
         Analyzer analyzer = new Analyzer(options);
         Result res = analyzer.analyze();
-        System.out.println(res);
+
+        WriterUtil.writeResults(options, res);
     }
 }

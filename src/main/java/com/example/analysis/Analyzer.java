@@ -1,4 +1,4 @@
-package com.example;
+package com.example.analysis;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,8 +18,8 @@ public class Analyzer {
 
     private final AnalyzeOptions options;
     private final List<String> strings = new ArrayList<>();
-    private final List<Long> integers = new ArrayList<>();
-    private final List<Double> doubles = new ArrayList<>();
+    private final List<String> integers = new ArrayList<>();
+    private final List<String> doubles = new ArrayList<>();
 
     private Long minLong = Long.MAX_VALUE;
     private Long maxLong = Long.MIN_VALUE;
@@ -48,6 +48,7 @@ public class Analyzer {
             builder.integers(integers)
                 .minInt(minLong)
                 .maxInt(maxLong)
+                .sumInt(sumLong)
                 .avgInt(avgInt)
             ;
         }
@@ -57,6 +58,7 @@ public class Analyzer {
             builder.doubles(doubles)
                 .minDouble(minDouble)
                 .maxDouble(maxDouble)
+                .sumDouble(sumDouble)
                 .avgDouble(avgDouble);
         }
 
@@ -76,13 +78,10 @@ public class Analyzer {
             BufferedReader bufferedReader = new BufferedReader(reader)
         ) {
             String line;
-
             while ((line = bufferedReader.readLine()) != null) {
-
                 if (line.isEmpty()) {
                     continue;
                 }
-
                 line = line.trim();
                 if (INT_PATTERN.matcher(line).matches()) {
                     processInteger(line);
@@ -100,16 +99,16 @@ public class Analyzer {
     }
 
     private void processInteger(String integerString) {
+        integers.add(integerString);
         long value = Long.parseLong(integerString);
-        integers.add(value);
         maxLong = Math.max(value, maxLong);
         minLong = Math.min(value, minLong);
         sumLong += value;
     }
 
     private void processDouble(String doubleString) {
+        doubles.add(doubleString);
         double value = Double.parseDouble(doubleString);
-        doubles.add(value);
         maxDouble = Math.max(value, maxDouble);
         minDouble = Math.min(value, minDouble);
         sumDouble += value;
