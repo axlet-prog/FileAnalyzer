@@ -21,15 +21,17 @@ public class App {
                 return;
             }
 
+            if (options.getInputFiles().isEmpty()) {
+                System.out.println("No files to analyze.");
+                return;
+            }
+
         } catch (Exception e) {
             System.out.println("Exception");
         }
 
-        System.out.println("params:");
-        System.out.println(options.x);
-        System.out.println(options.a);
-        System.out.println(options.archive.toPath().toAbsolutePath());
+        Analyzer analyzer = new Analyzer(options);
+        Result res = analyzer.analyze();
+        System.out.println(res);
     }
-
-
 }

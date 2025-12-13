@@ -10,7 +10,9 @@
     <name>Analyzer</name>
 
     <properties>
-        <java.version>25</java.version>
+        <java.version>21</java.version>
+        <lombok.version>1.18.30</lombok.version>
+        <picocli.version>4.7.7</picocli.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -19,7 +21,7 @@
         <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
-            <version>4.7.7</version>
+            <version>${picocli.version}</version>
         </dependency>
 
         <dependency>
@@ -27,6 +29,12 @@
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -39,19 +47,24 @@
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+
+                        <path>
                             <groupId>info.picocli</groupId>
                             <artifactId>picocli-codegen</artifactId>
-                            <version>4.7.7</version>
+                            <version>${picocli.version}</version>
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>
                         <arg>-Aproject=${project.groupId}/${project.artifactId}</arg>
                     </compilerArgs>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
         </plugins>
-
     </build>
-
-
 </project>

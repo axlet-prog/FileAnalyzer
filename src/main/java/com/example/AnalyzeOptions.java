@@ -2,21 +2,37 @@ package com.example;
 
 
 import java.io.File;
-import picocli.CommandLine;
+import java.nio.file.Path;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
 
-@CommandLine.Command(name = "file-analyzer",
+@Command(name = "file-analyzer",
                      mixinStandardHelpOptions = true,
                      version = "1.0",
                      description = "Analyzes a list of files and generates statistics.")
+@Getter
+@Setter
 public class AnalyzeOptions {
 
-    @Option(names = "-a", description = "some argument")
-    public String a;
+    @Option(names = { "-o" }, description = "directory to save result files")
+    private Path directoryPath;
 
-    @Option(names = { "-f", "--file" }, paramLabel = "ARCHIVE", description = "the archive file")
-    public File archive;
+    @Option(names = { "-p", "--prefix" }, description = "prefix of saved files")
+    private String titlePrefix;
 
-    @Option(names = "-k")
-    public int x;
+    @Option(names = "-a", description = "append to existing files")
+    private boolean appendToExistingFiles;
+
+    @Option(names = "-s", description = "short statistics")
+    private boolean shortStatistics;
+
+    @Option(names = "-f", description = "full statistics")
+    private boolean fullStatistics;
+
+    @Parameters(index = "0..*", description = "Input files to analyze")
+    private List<File> inputFiles;
 }
