@@ -12,8 +12,8 @@ import picocli.CommandLine.Parameters;
 
 @Command(name = "file-analyzer",
          mixinStandardHelpOptions = true,
-         version = "1.0",
-         description = "Analyzes a list of files and generates statistics.")
+         version = "1.1",
+         description = "Анализ списка файлов, фильтрация и вывод статистики.")
 @Getter
 @Setter
 public class AnalyzeOptions {
@@ -34,6 +34,6 @@ public class AnalyzeOptions {
     @Option(names = { "-f", "--full" }, description = "Вывод полной статистики.")
     private boolean fullStatistics;
 
-    @Parameters(index = "0..*", paramLabel = "FILES", description = "Input files to analyze")
+    @Parameters(index = "0..*", paramLabel = "FILES", description = "Входящие файлы для анализа")
     private List<File> inputFiles;
 }

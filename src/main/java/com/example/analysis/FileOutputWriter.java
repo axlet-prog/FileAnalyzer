@@ -13,12 +13,10 @@ public class FileOutputWriter implements AutoCloseable, OutputWriter {
     private static final String FILE_INTEGERS_NAME_DEFAULT = "integers.txt";
     private static final String FILE_DOUBLES_NAME_DEFAULT = "floats.txt";
     private static final String FILE_STRINGS_NAME_DEFAULT = "strings.txt";
-
+    private final AnalyzeOptions options;
     private BufferedWriter intWriter;
     private BufferedWriter floatWriter;
     private BufferedWriter stringWriter;
-
-    private final AnalyzeOptions options;
 
     public FileOutputWriter(AnalyzeOptions options) {
         this.options = options;
