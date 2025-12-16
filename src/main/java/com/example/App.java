@@ -6,7 +6,6 @@ import com.example.analysis.Result;
 import com.example.analysis.WriterUtil;
 import picocli.CommandLine;
 
-
 public class App {
 
     public static void main(String[] args) {
@@ -30,7 +29,7 @@ public class App {
         }
 
         Analyzer analyzer = new Analyzer();
-        Result res = analyzer.analyzeFiles(options.getInputFiles());
+        Result res = analyzer.analyzeFilesAndWrite(options);
 
         WriterUtil.writeResults(options, res);
     }
