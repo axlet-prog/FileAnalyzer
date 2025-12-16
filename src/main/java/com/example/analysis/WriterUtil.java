@@ -17,7 +17,7 @@ public class WriterUtil {
     public static void writeResults(AnalyzeOptions options, Result result) {
 
         if (result.integers().isEmpty() && result.doubles().isEmpty() && result.strings().isEmpty()) {
-            System.out.println("Нет результатов");
+            System.out.println("No results to write");
             return;
         }
 
@@ -35,7 +35,7 @@ public class WriterUtil {
                 try {
                     Files.createDirectories(directoryPath);
                 } catch (IOException e) {
-                    System.out.println("Невозможно создать директорию: " + directoryPath.toFile().getAbsolutePath());
+                    System.out.println("Unable to create directory: " + directoryPath.toFile().getAbsolutePath());
                 }
             }
             integerFilePath = directoryPath.resolve(integerFilePath);
@@ -80,7 +80,7 @@ public class WriterUtil {
                 }
             }
         } catch (IOException e) {
-            System.out.println("IO exception during file analysis: " + filePath);
+            System.out.println("IO writing results: " + filePath);
         }
     }
 
@@ -111,7 +111,7 @@ public class WriterUtil {
                         Min:   %d
                         Max:   %d
                         Sum:   %d
-                        Avg:   %.2f
+                        Avg:   %s
                     """,
                 result.integers().size(),
                 result.minInt(),

@@ -6,6 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,17 +16,17 @@ import java.util.regex.Pattern;
 
 public class Analyzer {
 
-    private static final Pattern INT_PATTERN = Pattern.compile("^-?\\d+$");
-    private static final Pattern DOUBLE_PATTERN = Pattern.compile("^-?\\d+\\.?\\d+([eE][+-]?\\d+)?$");
+    public static final Pattern INT_PATTERN = Pattern.compile("^-?\\d+$");
+    public static final Pattern DOUBLE_PATTERN = Pattern.compile("^-?\\d+\\.?\\d+([eE][+-]?\\d+)?$");
+    public static final Pattern DOUBLE_EXP_PATTERN = Pattern.compile("^-?\\d+[eE][+-]?\\d+$");
 
-    private final AnalyzeOptions options;
     private final List<String> strings = new ArrayList<>();
     private final List<String> integers = new ArrayList<>();
     private final List<String> doubles = new ArrayList<>();
 
     private Long minLong = Long.MAX_VALUE;
     private Long maxLong = Long.MIN_VALUE;
-    private Long sumLong = 0L;
+    private BigInteger sumLong = BigInteger.ZERO;
 
     private Double minDouble = Double.MAX_VALUE;
     private Double maxDouble = -Double.MAX_VALUE;
@@ -32,27 +35,20 @@ public class Analyzer {
     private long maxLength = 0;
     private long minLength = Integer.MAX_VALUE;
 
-    public Analyzer(AnalyzeOptions options) {
-        this.options = options;
-    }
-
-    public Result analyze() {
-        for (File file : options.getInputFiles()) {
-            analyzeFile(file);
-        }
-
+    public Result buildResult() {
         Result.ResultBuilder builder = Result.builder();
-
+        builder.integers(integers);
         if (!integers.isEmpty()) {
-            double avgInt = (double) sumLong / integers.size();
-            builder.integers(integers)
+            BigDecimal sumDecimal = new BigDecimal(this.sumLong);
+            BigDecimal countDecimal = BigDecimal.valueOf(integers.size());
+            double avg = sumDecimal.divide(countDecimal, MathContext.DECIMAL64).doubleValue();
+            builder
                 .minInt(minLong)
                 .maxInt(maxLong)
                 .sumInt(sumLong)
-                .avgInt(avgInt)
-            ;
+                .avgInt(avg);
         }
-
+        builder.doubles(doubles);
         if (!doubles.isEmpty()) {
             double avgDouble = sumDouble / doubles.size();
             builder.doubles(doubles)
@@ -61,7 +57,7 @@ public class Analyzer {
                 .sumDouble(sumDouble)
                 .avgDouble(avgDouble);
         }
-
+        builder.strings(strings);
         if (!strings.isEmpty()) {
             builder
                 .strings(strings)
@@ -72,43 +68,62 @@ public class Analyzer {
         return builder.build();
     }
 
+    public Result analyzeFiles(List<File> files) {
+        for (File file : files) {
+            analyzeFile(file);
+        }
+
+        return buildResult();
+    }
+
     private void analyzeFile(File file) {
         try (
             Reader reader = new FileReader(file, StandardCharsets.UTF_8);
             BufferedReader bufferedReader = new BufferedReader(reader)
         ) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                if (line.isEmpty()) {
-                    continue;
-                }
-                line = line.trim();
+            analyzeContent(bufferedReader);
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + file.getAbsoluteFile());
+        } catch (IOException e) {
+            System.err.println("Unable to process file: " + file.getAbsoluteFile());
+        }
+    }
+
+    public void analyzeContent(BufferedReader reader) throws IOException {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.isEmpty()) {
+                continue;
+            }
+            line = line.trim();
+            try {
                 if (INT_PATTERN.matcher(line).matches()) {
                     processInteger(line);
-                } else if (DOUBLE_PATTERN.matcher(line).matches()) {
+                } else if (DOUBLE_PATTERN.matcher(line).matches() ||
+                           DOUBLE_EXP_PATTERN.matcher(line).matches()
+                ) {
                     processDouble(line);
                 } else {
                     processString(line);
                 }
+            } catch (NumberFormatException numberFormatException) {
+                System.out.println("Unable to process number: " + line + ". It is considered as string.");
+                processString(line);
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + file.getAbsoluteFile());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
     private void processInteger(String integerString) {
-        integers.add(integerString);
         long value = Long.parseLong(integerString);
+        integers.add(integerString);
         maxLong = Math.max(value, maxLong);
         minLong = Math.min(value, minLong);
-        sumLong += value;
+        sumLong = sumLong.add(BigInteger.valueOf(value));
     }
 
     private void processDouble(String doubleString) {
-        doubles.add(doubleString);
         double value = Double.parseDouble(doubleString);
+        doubles.add(doubleString);
         maxDouble = Math.max(value, maxDouble);
         minDouble = Math.min(value, minDouble);
         sumDouble += value;

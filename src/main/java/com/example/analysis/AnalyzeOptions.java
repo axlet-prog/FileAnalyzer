@@ -34,6 +34,6 @@ public class AnalyzeOptions {
     @Option(names = { "-f", "--full" }, description = "Вывод полной статистики.")
     private boolean fullStatistics;
 
-    @Parameters(index = "1..*", paramLabel = "FILES", description = "Input files to analyze")
+    @Parameters(index = "0..*", paramLabel = "FILES", description = "Input files to analyze")
     private List<File> inputFiles;
 }

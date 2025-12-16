@@ -1,5 +1,6 @@
 package com.example.analysis;
 
+import java.math.BigInteger;
 import java.util.List;
 import lombok.Builder;
 
@@ -8,7 +9,7 @@ public record Result(
     Long minInt,
     Long maxInt,
     Double avgInt,
-    Long sumInt,
+    BigInteger sumInt,
     List<String> integers,
     Double minDouble,
     Double maxDouble,
