@@ -35,7 +35,7 @@
   mvn clean package
 ```
 
-После успешной сборки исполняемый файл `Analyzer-1.0.jar` появится в папке `target/`.
+После успешной сборки исполняемый файл `Analyzer-1.1.jar` появится в папке `target/`.
 
 ---
 
@@ -44,7 +44,7 @@
 Запуск осуществляется через командную строку:
 
 ```bash
-  java -jar target/Analyzer-1.0.jar [ОПЦИИ] <файлы_для_анализа...>
+  java -jar target/Analyzer-1.1.jar [ОПЦИИ] <файлы_для_анализа...>
 ```
 
 ### Поддерживаемые опции
@@ -81,7 +81,7 @@
 `strings.txt`).
 
 ```bash
-  java -jar target/Analyzer-1.0.jar in1.txt in2.txt
+  java -jar target/Analyzer-1.1.jar in1.txt in2.txt
 ```
 
 ### 2. Указание пути и префикса
@@ -89,7 +89,7 @@
 Сохранить результаты в папку `test_results` с префиксом `res_` (файлы вида `res_integers.txt`).
 
 ```bash
-  java -jar target/Analyzer-1.0.jar -o test_results -p res_ test1.txt test2.txt
+  java -jar target/Analyzer-1.1.jar -o test_results -p res_ test1.txt test2.txt
 ```
 
 ### 3. Полная статистика и режим добавления
@@ -97,5 +97,5 @@
 Добавить данные в существующие файлы и вывести полную статистику.
 
 ```bash
-  java -jar target/Analyzer-1.0.jar -a -f data.txt
+  java -jar target/Analyzer-1.1.jar -a -f data.txt
 ```
